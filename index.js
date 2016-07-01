@@ -52,10 +52,6 @@ var queryTorrents = function (query, retry) {
     }, function (error, response, body) {
         if (error) {
             defer.reject(error, retry);
-        } else if (!body || response.statusCode >= 400) {
-            defer.reject(new Error('No data'), retry);
-        } else if (!body.list || Object.keys(body.list).length === 0) {
-            defer.reject(new Error('No results'), retry);
         } else {
             defer.resolve(format(body, query.page || 1, Date.now() - t));
         }
@@ -100,145 +96,145 @@ var filteredLangCode = function (langcode) {
 
     var lang_id = '';
     switch (langcode) {
-        case 'en': 
+        case 'en':
             lang_id = 2;
             break;
-        case 'sq': 
+        case 'sq':
             lang_id = 42;
             break;
-        case 'ar': 
+        case 'ar':
             lang_id = 7;
             break;
-        case 'eu': 
+        case 'eu':
             lang_id = 44;
             break;
-        case 'bn': 
+        case 'bn':
             lang_id = 46;
             break;
-        case 'pt-br': 
+        case 'pt-br':
             lang_id = 39;
             break;
-        case 'bg': 
+        case 'bg':
             lang_id = 37;
             break;
-        case 'yue': 
+        case 'yue':
             lang_id = 45;
             break;
-        case 'ca': 
+        case 'ca':
             lang_id = 47;
             break;
-        case 'zh': 
+        case 'zh':
             lang_id = 10;
             break;
-        case 'hr': 
+        case 'hr':
             lang_id = 34;
             break;
-        case 'cs': 
+        case 'cs':
             lang_id = 32;
             break;
-        case 'da': 
+        case 'da':
             lang_id = 26;
             break;
-        case 'nl': 
+        case 'nl':
             lang_id = 8;
             break;
-        case 'tl': 
+        case 'tl':
             lang_id = 11;
             break;
-        case 'fi': 
+        case 'fi':
             lang_id = 31;
             break;
-        case 'fr': 
+        case 'fr':
             lang_id = 5;
             break;
-        case 'de': 
+        case 'de':
             lang_id = 4;
             break;
-        case 'el': 
+        case 'el':
             lang_id = 30;
             break;
-        case 'he': 
+        case 'he':
             lang_id = 25;
             break;
-        case 'hi': 
+        case 'hi':
             lang_id = 6;
             break;
-        case 'hu': 
+        case 'hu':
             lang_id = 27;
             break;
-        case 'it': 
+        case 'it':
             lang_id = 3;
             break;
-        case 'ja': 
+        case 'ja':
             lang_id = 15;
             break;
-        case 'kn': 
+        case 'kn':
             lang_id = 49;
             break;
-        case 'ko': 
+        case 'ko':
             lang_id = 16;
             break;
-        case 'lt': 
+        case 'lt':
             lang_id = 43;
             break;
-        case 'ml': 
+        case 'ml':
             lang_id = 21;
             break;
-        case 'cmn': 
+        case 'cmn':
             lang_id = 23;
             break;
-        case 'ne': 
+        case 'ne':
             lang_id = 48;
             break;
-        case 'no': 
+        case 'no':
             lang_id = 19;
             break;
-        case 'fa': 
+        case 'fa':
             lang_id = 33;
             break;
-        case 'pl': 
+        case 'pl':
             lang_id = 9;
             break;
-        case 'pt': 
+        case 'pt':
             lang_id = 17;
             break;
-        case 'pa': 
+        case 'pa':
             lang_id = 35;
             break;
-        case 'ro': 
+        case 'ro':
             lang_id = 18;
             break;
-        case 'ru': 
+        case 'ru':
             lang_id = 12;
             break;
-        case 'sr': 
+        case 'sr':
             lang_id = 28;
             break;
-        case 'sl': 
+        case 'sl':
             lang_id = 36;
             break;
-        case 'es': 
+        case 'es':
             lang_id = 14;
             break;
-        case 'sv': 
+        case 'sv':
             lang_id = 20;
             break;
-        case 'ta': 
+        case 'ta':
             lang_id = 13;
             break;
-        case 'te': 
+        case 'te':
             lang_id = 22;
             break;
-        case 'th': 
+        case 'th':
             lang_id = 24;
             break;
-        case 'tr': 
+        case 'tr':
             lang_id = 29;
             break;
-        case 'uk': 
+        case 'uk':
             lang_id = 40;
             break;
-        case 'vi': 
+        case 'vi':
             lang_id = 38;
             break;
         default:
