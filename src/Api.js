@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import uri from 'urijs';
-import Lang from './Lang';
+import resolveLang from './Lang';
+
 
 // https://thekat.tv (unofficial: http://kickassunblock.net)
 const mirror = uri('https://kickassto.co/');
@@ -18,18 +19,19 @@ export function format(response, page, responseTime) {
 
   // Add magnet
   for (let i = 0; i < formatted.results.length; i++) {
-    formatted.results[i].magnet =
-      'magnet:?xt=urn:btih:' +
-      formatted.results[i].hash +
-      '&dn=' +
-      formatted.results[i].title.replace(/[^a-z|^0-9]/gi, '+').replace(/\++/g, '+').toLowerCase() +
-      '&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337';
+    formatted.results[i].magnet = [
+      'magnet:?xt=urn:btih:',
+      formatted.results[i].hash,
+      '&dn=',
+      formatted.results[i].title.replace(/[^a-z|^0-9]/gi, '+').replace(/\++/g, '+').toLowerCase(),
+      '&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337'
+    ].join('');
   }
   return formatted;
 }
 
 export function queryTorrents(query, retry) {
-  const queryParams = {};
+  let queryParams = {};
   const endpoint = 'json.php';
 
   if (
@@ -54,45 +56,37 @@ export function queryTorrents(query, retry) {
     queryParams = { q: query };
   } else {
     queryParams.q = query.query || '';
-    if (query.category) queryParams.q += ' category:' + query.category;
-    if (query.min_seeds) queryParams.q += ' seeds:' + query.min_seeds;
-    if (query.uploader) queryParams.q += ' user:' + query.uploader;
-    if (query.age) queryParams.q += ' age:' + query.age;
-    if (query.safety_filter) queryParams.q += ' is_safe:' + query.safety_filter;
-    if (query.verified) queryParams.q += ' verified:' + query.verified;
-    if (query.language) queryParams.q += ' lang_id:' + Lang(query.language);
-    if (query.imdb) queryParams.q += ' imdb:' + query.imdb.replace(/\D/g,'');
-    if (query.tvrage) queryParams.q += ' tv:' + query.tvrage;
+    if (query.category) queryParams.q += `category:${query.category}`;
+    if (query.min_seeds) queryParams.q += `seeds:${query.min_seeds}`;
+    if (query.uploader) queryParams.q += `user:${query.uploader}`;
+    if (query.age) queryParams.q += `age:${query.age}`;
+    if (query.safety_filter) queryParams.q += `is_safe:${query.safety_filter}`;
+    if (query.verified) queryParams.q += `verified:${query.verified}`;
+    if (query.language) queryParams.q += `lang_id:${resolveLang(query.language)}`;
+    if (query.imdb) queryParams.q += `imdb:${query.imdb.replace(/\D/g, '')}`;
+    if (query.tvrage) queryParams.q += `tv:${query.tvrage}`;
     if (query.sort_by) queryParams.field = query.sort_by;
     if (query.order) queryParams.order = query.order;
     if (query.page) queryParams.page = query.page;
   }
 
-  let requestUri;
-  if (!retry) {
-    requestUri = url.clone()
+  const requestUri = (retry ? mirror : url)
+    .clone()
     .segment(endpoint)
     .addQuery(queryParams);
-  } else {
-    requestUri= mirror.clone()
-    .segment(endpoint)
-    .addQuery(queryParams);
-  }
 
   const time = Date.now();
   return fetch(requestUri.toString())
     .then(res => res.json())
-    .then(() => format(body, query.page || 1, Date.now() - t));
+    .then(res => format(res, query.page || 1, Date.now() - time));
 }
 
 export default function search(query) {
   return queryTorrents(query)
     .then(response => response)
-    .catch(function (error, retry) {
-      if (!retry) {
-        return queryTorrents(query, true);
-      } else {
-        return error;
-      }
-    });
+    .catch(
+      (error, retry) => (!retry
+                          ? queryTorrents(query, true)
+                          : error)
+    );
 }
