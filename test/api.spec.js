@@ -18,6 +18,13 @@ describe('Torrent ->', () => {
             .that.is.a('string');
           expect(result.metadata).to.not.include('undefined');
 
+          expect(result).to.have.property('title')
+            .that.is.a('string');
+          expect(result.metadata).to.not.include('undefined');
+
+          expect(result).to.have.property('verified')
+            .that.is.a('boolean');
+
           expect(result).to.have.property('seeders').that.is.a('number');
           expect(result).to.have.property('leechers').that.is.a('number');
         }

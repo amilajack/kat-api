@@ -14,6 +14,8 @@ export function search(query) {
       return {
         magnet: $(this).find('[title="Torrent magnet link"]').attr('href'),
         metadata: $(this).find('[title="Torrent magnet link"]').attr('href'),
+        title: $(this).find('a.cellMainLink').text(),
+        verified: !!$(this).find('[title="Verified Torrent"]').length,
         seeders: parseInt($(this).find('.green.center').text(), 10),
         leechers: parseInt($(this).find('.red.lasttd.center').text(), 10)
       };
