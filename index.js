@@ -4,7 +4,7 @@ var request = require('request'),
     URI = require('URIjs'),
     Q = require('q');
 
-var url = URI('https://kat.cr'),
+var url = URI('https://kat.am'),
     mirror = URI('https://kickassto.co/'); //https://thekat.tv (unofficial: http://kickassunblock.net)
 
 var queryTorrents = function (query, retry) {
