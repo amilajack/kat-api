@@ -11,7 +11,11 @@ describe('Torrent ->', () => {
       'game of thrones season 1 complete',
       'game of thrones season 3',
       'quantico season 3',
-      'the dark knight'
+      'the dark knight',
+      'game of thrones season 6',
+      'game of thrones season 6 complete',
+      'game of thrones s06 complete',
+      'game of thrones season 6 s06 complete'
     ];
 
     for (let i = 0; i < queries.length; i++) {
@@ -31,6 +35,7 @@ describe('Torrent ->', () => {
 
 function assertSearchResults(searchResults) {
   expect(searchResults).to.be.an('array');
+  expect(searchResults).to.have.length.above(10);
 
   for (const result of searchResults) {
     expect(result).to.have.property('magnet')

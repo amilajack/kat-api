@@ -10,7 +10,7 @@ export function search(query) {
   .then(showsHtml => {
     const $ = cheerio.load(showsHtml);
 
-    const torrents = $("table tr:not('.firstr')").map(function formatTorrents() {
+    const torrents = $("table.data tr:not('.firstr')").map(function formatTorrents() {
       return {
         magnet: $(this).find('[title="Torrent magnet link"]').attr('href'),
         metadata: $(this).find('[title="Torrent magnet link"]').attr('href'),
