@@ -1,6 +1,6 @@
 {
   "name": "super-kat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "KAT api wrapper with mirror fallback and advanced search parameters.",
   "homepage": "http://github.com/amilajack/kat-api",
   "repository": "git://github.com/amilajack/kat-api.git",

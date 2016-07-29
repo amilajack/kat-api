@@ -21,11 +21,6 @@ export function search(query, endpoint = 'https://kickass.skillproxy.org') {
       };
     }).get();
 
-    if (!torrents.length) {
-      console.log(`${endpoint}/usearch/${encodeURIComponent(query)}/?field=seeders&sorder=desc`);
-      console.log(showsHtml);
-    }
-
     return torrents;
   });
 }
