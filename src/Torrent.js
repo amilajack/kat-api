@@ -2,8 +2,8 @@ import fetch from 'isomorphic-fetch';
 import cheerio from 'cheerio';
 
 
-export function search(query) {
-  return fetch(`http://kat.am/usearch/${encodeURIComponent(query)}/?field=seeders&sorder=desc`, {
+export function search(query, endpoint = 'https://kickass.skillproxy.org') {
+  return fetch(`${endpoint}/usearch/${encodeURIComponent(query)}/?field=seeders&sorder=desc`, {
     mode: 'no-cors'
   })
   .then(res => res.text())
@@ -20,6 +20,11 @@ export function search(query) {
         leechers: parseInt($(this).find('.red.lasttd.center').text(), 10)
       };
     }).get();
+
+    if (!torrents.length) {
+      console.log(`${endpoint}/usearch/${encodeURIComponent(query)}/?field=seeders&sorder=desc`);
+      console.log(showsHtml);
+    }
 
     return torrents;
   });
